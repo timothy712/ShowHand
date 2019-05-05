@@ -1,0 +1,7 @@
+C:\Users\Timothy Kao\Desktop\lecture\Lecture\Lecture\bin\Debug\Lecture.exe.config
+C:\Users\Timothy Kao\Desktop\lecture\Lecture\Lecture\bin\Debug\Lecture.exe
+C:\Users\Timothy Kao\Desktop\lecture\Lecture\Lecture\bin\Debug\Lecture.pdb
+C:\Users\Timothy Kao\Desktop\lecture\Lecture\Lecture\obj\Debug\Lecture.csprojAssemblyReference.cache
+C:\Users\Timothy Kao\Desktop\lecture\Lecture\Lecture\obj\Debug\Lecture.csproj.CoreCompileInputs.cache
+C:\Users\Timothy Kao\Desktop\lecture\Lecture\Lecture\obj\Debug\Lecture.exe
+C:\Users\Timothy Kao\Desktop\lecture\Lecture\Lecture\obj\Debug\Lecture.pdb
