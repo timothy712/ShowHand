@@ -17,6 +17,7 @@ namespace Lecture
         public static int[] twopairs = new int[2] { -1, -1 };
         public static int threepairs = -1;
         public static int fourpairs = -1;
+        public static int straight = -1;
 
         public static int[] cardType = { 1, 2, 3, 4, 5, 6, 7, 8 };
         public static string[] cardTypeName = { "同花順", "鐵支", "葫蘆", "三條", "順子", "兩對", "一對", "王八" };
@@ -36,11 +37,10 @@ namespace Lecture
                 myHand[i, 1] = tempHand[1];
 
                 Console.WriteLine("My " + (i + 1) + " Card : " + PrintHandCard(myHand, i));
-                //Console.WriteLine("Player A Card : " + PrintACard(ACard));
             }
+            //myHand = new int[5, 2] { { 3, 9 }, { 4, 10 }, { 4, 11 }, { 4, 12 }, { 4, 13 } };
 
             Console.WriteLine();
-            int myStraight = CheckStraight(myHand);
             int[] myHandSize = CheckPairs(myHand);
             Console.WriteLine();
 
@@ -55,7 +55,6 @@ namespace Lecture
             }
 
             Console.WriteLine();
-            int opponentStraight = CheckStraight(opponentHand);
             int[] opponentHandSize = CheckPairs(opponentHand);
             Console.WriteLine();
 
@@ -241,10 +240,12 @@ namespace Lecture
             twopairs = new int[] { -1, -1 };
             threepairs = -1;
             fourpairs = -1;
+            straight = -1;
 
             //pairCheck為牌型判斷依據
             int[] pairCheck = CheckHowManyPairs(myHand);
             int[] result = new int[3];
+            //result[0] = 牌型, result[1] = 數字, result[2] = 如是兩對則是第二個對子，否則為0。
            
             if (pairCheck[1] == 1)
             {
@@ -298,6 +299,39 @@ namespace Lecture
                 result[2] = 0;
                 return result;
             }
+            else if (pairCheck[3] == 1)
+            {
+                Console.WriteLine("牌型為 " + pairCheck[3] + " 個順子。");
+                int straightColor = CheckStraightColor(myHand);
+                int[] myHandNumber = SortHandNumber(myHand);
+
+                string numString = "";
+                if (straightColor != 0)
+                {
+                    Console.WriteLine("而且還是" + card_suits_name[straightColor - 1] + "同花順!");
+                    foreach (int num in myHandNumber)
+                    {
+                        numString += card_cardnum_name[num - 1] + " ";
+                    }
+                    Console.WriteLine(numString.Trim() + "順子。");
+
+                    result[0] = 1;
+                    result[1] = myHandNumber[4];
+                    result[2] = 0;
+                    return result;
+                }
+
+                foreach (int num in myHandNumber)
+                {
+                    numString += card_cardnum_name[num - 1] + " ";
+                }
+                Console.WriteLine(numString.Trim() + "順子。");
+
+                result[0] = 5;
+                result[1] = myHandNumber[4];
+                result[2] = 0;
+                return result;
+            }
             else
             {
                 Console.WriteLine("什麼牌型也沒有。");
@@ -310,12 +344,29 @@ namespace Lecture
             }
         }
 
+        public static int CheckStraightColor(int[,] myHand)
+        {
+            int[] myHandNumber = SortHandNumber(myHand);
+            if (myHand[0, 0] == myHand[1, 0] && myHand[0, 0] == myHand[2, 0] && myHand[0, 0] == myHand[3, 0] && myHand[0, 0] == myHand[4, 0])
+            {
+                return myHand[0, 0];
+            }
+            return 0;
+        }
 
         public static int[] CheckHowManyPairs(int[,] myHand)
         {
             int[] myHandNumber = SortHandNumber(myHand);
 
-            int[] pairCheck = new int[3] { 0, 0, 0 };
+            //牌型 { 對子, 三條, 四條, 順子 }
+            int[] pairCheck = new int[4] { 0, 0, 0, 0 };
+
+            int straightResult = CheckStraight(myHand);
+            if (straightResult == 1)
+            {
+                pairCheck[3] = 1;
+                return pairCheck;
+            }
 
             int count = 0;
             
