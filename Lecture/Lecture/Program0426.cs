@@ -14,11 +14,12 @@ namespace Lecture
         public static int[] cardnum = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };//數字等於牌號
         public static string[] card_cardnum_name = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
         public static int[] card_sent = new int[52];
+        //儲存牌型的數字
         public static int[] twopairs = new int[2] { -1, -1 };
         public static int threepairs = -1;
         public static int fourpairs = -1;
         public static int straight = -1;
-
+        //牌型，cardType對應cardTypeName
         public static int[] cardType = { 1, 2, 3, 4, 5, 6, 7, 8 };
         public static string[] cardTypeName = { "同花順", "鐵支", "葫蘆", "三條", "順子", "兩對", "一對", "王八" };
 
@@ -26,10 +27,9 @@ namespace Lecture
         static void Main(string[] args)
         {
             initCards();
-            int[] mycard = new int[2];
-            int[] ACard = new int[2];
 
-            int[,] myHand = new int[5, 2];
+            int[,] myHand = new int[5, 2];  //my card
+            //draw 5 cards for each player
             for (int i = 0; i < 5; i++)
             {
                 int[] tempHand = GiveCard();
@@ -44,7 +44,7 @@ namespace Lecture
             int[] myHandSize = CheckPairs(myHand);
             Console.WriteLine();
 
-            int[,] opponentHand = new int[5, 2];
+            int[,] opponentHand = new int[5, 2];    //opponent's card
             for (int j = 0; j < 5; j++)
             {
                 int[] tempHand = GiveCard();
@@ -71,6 +71,7 @@ namespace Lecture
 
         }
 
+        //比較兩副手牌誰大誰小
         public static void CompareCard(int[] myHandSize, int[] opponentHandSize, int[,] myHand, int[,] opponentHand)
         {
             if (myHandSize[0] < opponentHandSize[0])
@@ -189,6 +190,7 @@ namespace Lecture
             }
         }
 
+        //將手牌由小到大做排序
         public static int[] SortHandNumber(int[,] myHand)
         {
             int[] tempHand = new int[5];
@@ -213,6 +215,7 @@ namespace Lecture
             return tempHand;
         }
 
+        //判斷是否為順子
         public static int CheckStraight(int[,] myHand)
         {
             int result = 0;
@@ -235,6 +238,7 @@ namespace Lecture
         public static int myHander;
         public static int opponentHander;
 
+        //印出牌型，回傳result
         public static int[] CheckPairs(int[,] myHand)
         {
             twopairs = new int[] { -1, -1 };
@@ -354,11 +358,12 @@ namespace Lecture
             return 0;
         }
 
+        //判斷牌型
         public static int[] CheckHowManyPairs(int[,] myHand)
         {
             int[] myHandNumber = SortHandNumber(myHand);
 
-            //牌型 { 對子, 三條, 四條, 順子 }
+            //牌型 { 對子, 三條, 四條, 順子 } 
             int[] pairCheck = new int[4] { 0, 0, 0, 0 };
 
             int straightResult = CheckStraight(myHand);
@@ -370,6 +375,8 @@ namespace Lecture
 
             int count = 0;
             
+            //以撲克牌數字2~A為順序來比對手牌，若有發現手牌也有該數字則count+1，最後更新至pairCheck
+            //count = 2為對子、3為三條、4為鐵支
             for (int i = 0; i < 13; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -383,6 +390,7 @@ namespace Lecture
                 if (count == 2)
                 {
                     pairCheck[0]++;
+                    //因為有一個對子或兩個對子，所以twopairs宣告為陣列，twopairs[0]為第一個對子的數字，twopairs[1]為第二個對子。
                     if (twopairs[0] == -1)
                     {
                         twopairs[0] = i;
@@ -463,11 +471,13 @@ namespace Lecture
             return card_suits_name[ACard[0]] + " " + card_cardnum_name[ACard[1]];
         }
 
+        //印出牌的數字和花色
         public static string PrintHandCard(int[,] ACard, int choose)
         {
             return card_suits_name[ACard[choose, 0]] + " " + card_cardnum_name[ACard[choose, 1]];
         }
 
+        //比對兩張牌誰大誰小
         public static void CompareCards(int[] myCard, int[] ACard)
         {
             string myCardString = card_suits_name[myCard[0] - 1] + " " + card_cardnum_name[myCard[1] - 1];
